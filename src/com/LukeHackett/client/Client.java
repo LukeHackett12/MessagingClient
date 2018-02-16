@@ -5,22 +5,18 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.*;
-import java.math.BigInteger;
 import java.net.Socket;
 import java.security.*;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.RSAPrivateKeySpec;
-import java.security.spec.RSAPublicKeySpec;
 
 class Client {
     private long id;
     private KeyPair keypair;
-    private Socket socket;
+    private Socket serverSocket;
+    private Socket listenerSocket;
 
     Client(String requestedIP, int port){
-        this.id = id;
         try{
-            socket = new Socket(requestedIP, port);
+            serverSocket = new Socket(requestedIP, port);
         }
         catch(IOException e) {
             e.printStackTrace();
@@ -44,13 +40,30 @@ class Client {
         return id;
     }
 
-    public Socket getSocket(){
-        return socket;
+    public Socket getServerSocket(){
+        return serverSocket;
     }
 
-    public void closeSocket(){
+    public Socket getListenerSocket(){
+        return listenerSocket;
+    }
+
+    public void setListenerSocket(String requestedIP, int port) throws IOException {
+        listenerSocket = new Socket(requestedIP, port);
+    }
+
+    public void closeServerSocket(){
         try{
-            socket.close();
+            serverSocket.close();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void closeListenerSocket(){
+        try{
+            listenerSocket.close();
         }
         catch(IOException e) {
             e.printStackTrace();
@@ -59,6 +72,10 @@ class Client {
 
     public PublicKey getPublicKey(){
         return keypair.getPublic();
+    }
+
+    public PrivateKey getPrivateKey(){
+        return keypair.getPrivate();
     }
 
     public byte[] encryptClientMessage(PublicKey pubKey, byte[] message) throws NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException {
