@@ -1,6 +1,7 @@
 package com.LukeHackett.client;
 
 import javax.swing.*;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
@@ -9,13 +10,13 @@ import java.util.HashMap;
 
 public class ClientWindow {
     JTextField userInput;
+    JTextField addClientText;
     JList<String> clientList;
     JButton addClientButton;
+    JButton sendButton;
     JPanel contentPane;
-    JTextField addClientText;
 
-    private JButton sendButton;
-    private DefaultListModel<String> model;
+    private static DefaultListModel<String> model;
     private long currentID;
 
     public JTextArea messageDisplay;
@@ -35,6 +36,8 @@ public class ClientWindow {
 
         model = new DefaultListModel<>();
         messageDisplays = new HashMap<>();
+        messageDisplay.setFont(messageDisplay.getFont().deriveFont(12f));
+        sendButton.setFont(sendButton.getFont().deriveFont(12f));
 
         clientList.setModel(model);
         frame.setContentPane(contentPane);
@@ -42,9 +45,17 @@ public class ClientWindow {
         frame.pack();
         frame.setVisible(true);
 
+        ActionListener updateText = evt -> {
+            if(clientList.getSelectedIndex() >= 0) setClientView(clientList.getSelectedIndex());
+        };
+        Timer timer = new Timer(100 ,updateText);
+        timer.setRepeats(true);
+        timer.start();
+
         addClientButton.addActionListener(e -> {
             try {
-                addClient();
+                Long newClient = Long.parseLong(addClientText.getText());
+                addClient(newClient);
             } catch (NoSuchAlgorithmException | IOException | InvalidKeySpecException e1) {
                 e1.printStackTrace();
             }
@@ -61,14 +72,13 @@ public class ClientWindow {
         });
     }
 
-    private void addClient() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
-        Long l = Long.parseLong(addClientText.getText());
-        PublicKey key = Messenger.receiveKey(Messenger.testClient, l);
-        System.out.println("Adding key for Client" + l);
-        Messenger.recipients.put(l, key);
+    public static void addClient(Long newClient) throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
+        PublicKey key = Messenger.receiveKey(Messenger.testClient, newClient);
+        System.out.println("Adding key for Client" + newClient);
+        Messenger.recipients.put(newClient, key);
 
-        model.addElement("Client " + l.toString());
-        String messageD = "Client " + l.toString();
+        model.addElement("Client " + newClient);
+        String messageD = "Client " + newClient;
 
         messageDisplays.put(messageD, messageD);
     }
@@ -93,6 +103,5 @@ public class ClientWindow {
         String[] split = clientID.split(" ");
         currentID = Long.parseLong(split[1]);
         currentHash = clientID;
-        System.out.println(currentID);
     }
 }

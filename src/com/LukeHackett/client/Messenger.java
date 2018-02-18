@@ -3,19 +3,27 @@ package com.LukeHackett.client;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.security.*;
+import java.security.InvalidKeyException;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
+import java.security.PublicKey;
 import java.util.HashMap;
 
-public class Messenger implements Runnable{
 
-    public static HashMap<Long, PublicKey> recipients = new HashMap<>();
+public class Messenger implements
+        Runnable{
+
+    public static HashMap<Long, PublicKey> recipients;
     public static Client testClient;
 
     public void run(){
+        recipients = new HashMap<>();
         testClient = new Client("localhost", 5050);
         try {
             testClient.setListenerSocket("localhost", 5050);
@@ -26,9 +34,6 @@ public class Messenger implements Runnable{
         keyExchange(testClient);
         System.out.println("Client " + testClient.getId() + "pub id is: " + testClient.getPublicKey());
         System.out.println("Client " + testClient.getId());
-
-        //TODO Start having better ideas, maybe when u add the client it grabs and associates the key
-        //You absolute twat...
 
         //Start listener receiving any incoming messages
         Listener receiveMessage = new Listener(testClient, testClient.getPrivateKey());
