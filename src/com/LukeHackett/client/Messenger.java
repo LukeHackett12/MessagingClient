@@ -24,7 +24,7 @@ public class Messenger implements
 
     public void run(){
         recipients = new HashMap<>();
-        testClient = new Client("localhost", 5050);
+        testClient = new Client("37.228.204.207", 5050);
         try {
             testClient.setListenerSocket("localhost", 5050);
         } catch (IOException e) {
