@@ -1,6 +1,7 @@
 package com.LukeHackett.client;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -15,23 +16,18 @@ public class ClientWindow {
     JButton addClientButton;
     JButton sendButton;
     JPanel contentPane;
+    JComboBox<Object> serverList;
+
+    public JTextArea messageDisplay;
+    public static int count;
+    public static HashMap<String, String> messageDisplays;
+    public static HashMap<Integer, String> serverMap;
 
     private static DefaultListModel<String> model;
     private long currentID;
+    private String currentClient;
 
-    public JTextArea messageDisplay;
-    public static HashMap<String, String> messageDisplays;
-    public static String currentHash;
-
-    public static void main(String[] args){
-        Messenger m = new Messenger();
-        Thread thread = new Thread(m);
-        thread.start();
-
-        new ClientWindow();
-    }
-
-    private ClientWindow(){
+    ClientWindow(){
         JFrame frame = new JFrame("Client");
 
         model = new DefaultListModel<>();
@@ -39,14 +35,36 @@ public class ClientWindow {
         messageDisplay.setFont(messageDisplay.getFont().deriveFont(12f));
         sendButton.setFont(sendButton.getFont().deriveFont(12f));
 
+        serverMap = new HashMap<>();
+        count = 0;
+        serverList.addItem("Connect to server...");
+        serverList.addActionListener(e ->{
+            String s = serverList.getSelectedItem().toString();
+            if(s.equals("Connect to server...")){
+                addServer();
+            }
+        });
+
         clientList.setModel(model);
         frame.setContentPane(contentPane);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
 
+        final int[] tempCount = {0};
         ActionListener updateText = evt -> {
-            if(clientList.getSelectedIndex() >= 0) setClientView(clientList.getSelectedIndex());
+            if(clientList.getSelectedIndex() >= 0){
+                setClientView(clientList.getSelectedIndex());
+            }
+            if(count != tempCount[0]){
+                serverList.addItem(serverMap.get(count-1));
+                serverList.setSelectedIndex(1);
+                serverList.setEnabled(false);
+                Messenger m = new Messenger(serverMap.get(count-1));
+                Thread t = new Thread(m);
+                t.start();
+                tempCount[0] = count;
+            }
         };
         Timer timer = new Timer(100 ,updateText);
         timer.setRepeats(true);
@@ -55,11 +73,22 @@ public class ClientWindow {
         addClientButton.addActionListener(e -> {
             try {
                 Long newClient = Long.parseLong(addClientText.getText());
+                addClientText.setText("");
                 addClient(newClient);
             } catch (NoSuchAlgorithmException | IOException | InvalidKeySpecException e1) {
                 e1.printStackTrace();
             }
         });
+        addClientText.addActionListener(e -> {
+            try {
+                Long newClient = Long.parseLong(addClientText.getText());
+                addClientText.setText("");
+                addClient(newClient);
+            } catch (NoSuchAlgorithmException | IOException | InvalidKeySpecException e1) {
+                e1.printStackTrace();
+            }
+        });
+
         sendButton.addActionListener(e -> {
             try {
                 sendMessage();
@@ -67,6 +96,14 @@ public class ClientWindow {
                 e1.printStackTrace();
             }
         });
+        userInput.addActionListener(e -> {
+            try {
+                sendMessage();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+
         clientList.addListSelectionListener(e -> {
             if(e.getValueIsAdjusting()) setClientView(clientList.getSelectedIndex());
         });
@@ -83,14 +120,20 @@ public class ClientWindow {
         messageDisplays.put(messageD, messageD);
     }
 
+    private void addServer(){
+        serverAdd dialog = new serverAdd();
+        dialog.pack();
+        dialog.setVisible(true);
+    }
+
     private void sendMessage() throws IOException {
         String s = userInput.getText();
         userInput.setText("");
-        String alter = messageDisplays.get(currentHash) + '\n' +
+        String alter = messageDisplays.get(currentClient) + '\n' +
                 "Client " + Messenger.testClient.getId() + ": " + s;
         Message message = new Message(Messenger.testClient.getId(), currentID, s);
 
-        messageDisplays.put(currentHash, alter);
+        messageDisplays.put(currentClient, alter);
         Messenger.sendMessage(message, currentID, Messenger.testClient);
     }
 
@@ -102,6 +145,6 @@ public class ClientWindow {
         //Parse the long from the client + long title
         String[] split = clientID.split(" ");
         currentID = Long.parseLong(split[1]);
-        currentHash = clientID;
+        currentClient = clientID;
     }
 }

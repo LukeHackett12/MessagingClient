@@ -16,17 +16,22 @@ import java.security.PublicKey;
 import java.util.HashMap;
 
 
-public class Messenger implements
-        Runnable{
+public class Messenger implements Runnable{
 
     public static HashMap<Long, PublicKey> recipients;
     public static Client testClient;
 
+    private static String server;
+
+    Messenger(String server){
+        Messenger.server = server;
+    }
+
     public void run(){
         recipients = new HashMap<>();
-        testClient = new Client("37.228.204.207", 5050);
+        testClient = new Client(server, 5050);
         try {
-            testClient.setListenerSocket("37.228.204.207", 5050);
+            testClient.setListenerSocket(server, 5050);
         } catch (IOException e) {
             e.printStackTrace();
         }
