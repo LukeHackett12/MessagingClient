@@ -8,8 +8,8 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.security.PrivateKey;
+import java.security.spec.InvalidKeySpecException;
 
 
 public class Listener implements Runnable {
@@ -47,16 +47,9 @@ public class Listener implements Runnable {
         String decryptedMessage = new String(decrypt.doFinal(message));
         String senderID = "Client " + sender;
 
-        //Check if the client already has an open chat with the
-        if(ClientWindow.messageDisplays.containsKey(senderID)){
-            String newText = ClientWindow.messageDisplays.get(senderID) + "\n" + senderID + ": " + decryptedMessage;
-            ClientWindow.messageDisplays.put(senderID, newText);
-        }
-        else{
-            //Add client
-            ClientWindow.addClient(sender);
-            String newText = ClientWindow.messageDisplays.get(senderID) + "\n" + senderID + ": " + decryptedMessage;
-            ClientWindow.messageDisplays.put(senderID, newText);
-        }
+        if(!ClientController.messageDisplays.containsKey(sender)) ClientController.addClient(sender);
+        
+        String newText = ClientController.messageDisplays.get(sender) + senderID + ": " + decryptedMessage + "\n";
+        ClientController.messageDisplays.put(sender, newText);
     }
 }

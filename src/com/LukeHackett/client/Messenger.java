@@ -10,16 +10,16 @@ import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
-import java.security.PublicKey;
 import java.util.HashMap;
 
 
 public class Messenger implements Runnable{
 
     public static HashMap<Long, PublicKey> recipients;
-    public static Client testClient;
+    public static Client client;
 
     private static String server;
 
@@ -29,19 +29,19 @@ public class Messenger implements Runnable{
 
     public void run(){
         recipients = new HashMap<>();
-        testClient = new Client(server, 5050);
+        client = new Client(server, 5050);
         try {
-            testClient.setListenerSocket(server, 5050);
+            client.setListenerSocket(server, 5050);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        keyExchange(testClient);
-        System.out.println("Client " + testClient.getId() + "pub id is: " + testClient.getPublicKey());
-        System.out.println("Client " + testClient.getId());
+        keyExchange(client);
+        System.out.println("Client " + client.getId() + "pub id is: " + client.getPublicKey());
+        System.out.println("Client " + client.getId());
 
         //Start listener receiving any incoming messages
-        Listener receiveMessage = new Listener(testClient, testClient.getPrivateKey());
+        Listener receiveMessage = new Listener(client, client.getPrivateKey());
         Thread receiveMessageThread = new Thread(receiveMessage);
         receiveMessageThread.start();
     }
