@@ -49,7 +49,8 @@ public class Listener implements Runnable {
 
         if(!ClientController.messageDisplays.containsKey(sender)) ClientController.addClient(sender);
         
-        String newText = ClientController.messageDisplays.get(sender) + senderID + ": " + decryptedMessage + "\n";
+        String newText = ClientController.messageDisplays.get(sender) + '\n' + senderID + ": " + decryptedMessage;
         ClientController.messageDisplays.put(sender, newText);
+        ClientController.currentID = sender;
     }
 }

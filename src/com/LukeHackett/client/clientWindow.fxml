@@ -9,13 +9,13 @@
 <?import javafx.scene.layout.GridPane?>
 <!--suppress ALL -->
 
-<GridPane alignment="CENTER" hgap="10.0" vgap="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.LukeHackett.client.ClientController">
+<GridPane alignment="CENTER" hgap="10.0" maxHeight="10000.0" pickOnBounds="false" vgap="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.LukeHackett.client.ClientController">
   <children>
-    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" expanded="true" prefHeight="700.0" prefWidth="700.0" text="" GridPane.columnIndex="0" GridPane.rowIndex="0">
+    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" expanded="true" maxHeight="1000000.0" prefHeight="700.0" prefWidth="700.0" text="" GridPane.columnIndex="0" GridPane.rowIndex="0">
       <content>
         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
           <children>
-            <TabPane fx:id="tabPane" prefHeight="464.0" prefWidth="528.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <TabPane fx:id="tabPane" maxHeight="100000.0" prefHeight="464.0" prefWidth="528.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <tabs>
                 <Tab fx:id="tab" text="Server 1">
                   <content>
@@ -23,11 +23,11 @@
                       <items>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                           <children>
-                            <SplitPane fx:id="hozirzontalSplit" dividerPositions="0.29941860465116277" focusTraversable="true" prefHeight="290.0" prefWidth="690.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <SplitPane fx:id="hozirzontalSplit" dividerPositions="0.25" focusTraversable="true" prefHeight="290.0" prefWidth="690.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                               <items>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                   <children>
-                                    <SplitPane dividerPositions="0.799163179916318" focusTraversable="true" orientation="VERTICAL" prefHeight="493.0" prefWidth="203.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <SplitPane dividerPositions="0.8242677824267782" focusTraversable="true" orientation="VERTICAL" prefHeight="493.0" prefWidth="203.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <items>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                           <children>
@@ -54,7 +54,7 @@
                         </AnchorPane>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                           <children>
-                            <SplitPane dividerPositions="0.7994186046511628" focusTraversable="true" prefHeight="82.0" prefWidth="690.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <SplitPane dividerPositions="0.8255813953488372" focusTraversable="true" pickOnBounds="false" prefHeight="82.0" prefWidth="690.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                               <items>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                   <children>

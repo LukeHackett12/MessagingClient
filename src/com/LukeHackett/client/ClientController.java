@@ -3,7 +3,6 @@ package com.LukeHackett.client;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,10 +10,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -122,7 +121,7 @@ public class ClientController {
         System.out.println("Adding key for Client" + newClient);
         Messenger.recipients.put(newClient, key);
 
-        String messageD = " ";
+        String messageD = "----- Client " + newClient + " -----";
         messageDisplays.put(newClient, messageD);
 
         ObservableList<String> data = FXCollections.observableArrayList(clientList.getItems());
@@ -138,5 +137,20 @@ public class ClientController {
                 messageDisplay.setText(messageDisplays.get(currentID));
             }
         }, 0, 100);
+    }
+
+    public static void showID(){
+        final Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(Main.primaryStage);
+        GridPane gridPane = new GridPane();
+
+        Text message = new Text("You are client " + Messenger.client.getId());
+        GridPane.setConstraints(message, 0, 0);
+        gridPane.getChildren().add(message);
+
+        Scene dialogScene = new Scene(gridPane, 200, 50);
+        dialog.setScene(dialogScene);
+        dialog.show();
     }
 }

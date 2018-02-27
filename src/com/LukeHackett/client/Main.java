@@ -21,7 +21,7 @@ public class Main extends Application {
         Main.primaryStage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("clientWindow.fxml"));
         primaryStage.setTitle("Messaging Client");
-        Scene scene = new Scene(root, 300, 275);
+        Scene scene = new Scene(root, 600, 600);
         primaryStage.setScene(scene);
         primaryStage.setOnCloseRequest(t -> {
             Platform.exit();

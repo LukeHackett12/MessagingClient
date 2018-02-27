@@ -1,5 +1,7 @@
 package com.LukeHackett.client;
 
+import javafx.application.Platform;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -39,6 +41,12 @@ public class Messenger implements Runnable{
         keyExchange(client);
         System.out.println("Client " + client.getId() + "pub id is: " + client.getPublicKey());
         System.out.println("Client " + client.getId());
+
+        Platform.runLater(
+                () -> {
+                    ClientController.showID();
+                }
+        );
 
         //Start listener receiving any incoming messages
         Listener receiveMessage = new Listener(client, client.getPrivateKey());
